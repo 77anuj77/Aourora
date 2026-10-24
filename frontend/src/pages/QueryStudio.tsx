@@ -58,7 +58,7 @@ export default function QueryStudio() {
   const collections = mongoCols?.collections?.map((c: any) => c.collection) || [];
 
   useEffect(() => {
-    if (dbType === 'sqlite' && tables.length && !dataset) setDataset(tables[0]);
+    if (dbType === 'sqlite' && tables.length && !dataset) setDataset(tables.includes('transactions') ? 'transactions' : tables[0]);
     if (dbType === 'mongodb' && collections.length && !dataset) setDataset(collections[0]);
   }, [tables, collections, dbType]);
 
