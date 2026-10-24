@@ -186,7 +186,7 @@ export default function QueryStudio() {
         setResult(res);
       }
       // refresh live rows
-      refreshRows();
+      await refreshRows();
       qc.invalidateQueries({ queryKey: ['dashboard'] });
     } catch (e: any) {
       setResult({ success: false, error: e?.message || String(e), database: dbType, operation, preview, duration_ms: 0 });
