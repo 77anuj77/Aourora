@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finance_tracker"
+version = "0.1.0"
+description = "Student Finance Tracker FastAPI + SQLite + MongoDB"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic",
+  "pydantic-settings",
+  "python-dotenv",
+  "pymongo",
+  "faker",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "mongomock", "httpx"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

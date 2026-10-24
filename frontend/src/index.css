@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #E9EEF5;
+  --surface: #EDF2F8;
+  --primary: #7C83FD;
+  --secondary: #A8B8FF;
+  --success: #48BFA7;
+  --warning: #F5B971;
+  --danger: #F08080;
+  --text: #263247;
+  --muted: #78869A;
+  --highlight: #FFFFFF;
+  --raised: 8px 8px 18px #cbd3df, -8px -8px 18px #ffffff;
+  --inset: inset 5px 5px 10px #cbd3df, inset -5px -5px 10px #ffffff;
+}
+
+html, body, #root {
+  background: var(--canvas);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100%;
+}
+
+h1, h2, h3 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+.font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+.soft-card { background: var(--surface); border-radius: 24px; box-shadow: var(--raised); }
+.soft-input { background: var(--surface); border-radius: 12px; box-shadow: var(--inset); }
+.soft-btn { background: var(--surface); border-radius: 12px; box-shadow: var(--raised); transition: all 150ms ease; }
+.soft-btn:active { box-shadow: var(--inset); }
+.soft-inset { box-shadow: var(--inset); }
+.soft-raised { box-shadow: var(--raised); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
