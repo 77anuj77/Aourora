@@ -36,3 +36,13 @@ h1, h2, h3 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+
+.soft-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+.soft-card:hover { transform: translateY(-2px); box-shadow: 10px 10px 22px #cbd3df, -10px -10px 22px #ffffff; }
+.soft-btn { transition: transform 150ms ease, box-shadow 150ms ease; }
+.soft-btn:hover { transform: translateY(-1px); }
+tr:hover { background: rgba(124,131,253,0.06); }
+a:hover { color: var(--primary); }
+button:hover { opacity: 0.9; }
+.soft-input:focus { outline: 2px solid var(--primary); }

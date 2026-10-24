@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { financeApi } from '../services/finance';
 import SoftCard from './ui/SoftCard';
 import Button from './ui/Button';
-import { Plus, Trash2, Edit2, Filter } from 'lucide-react';
+import { Plus, Trash2, Edit2, Filter, Download } from 'lucide-react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,6 +48,17 @@ export default function TransactionManager({ fixedType }: { fixedType?: 'income'
     else createMut.mutate(d);
   };
 
+  const exportCsv = async () => {
+    try {
+      const text = await financeApi.exportCsv({ ...filters, ...(fixedType ? { type: fixedType } : {}) });
+      const blob = new Blob([text], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'transactions.csv'; a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) { alert('Export failed'); }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-3">
@@ -55,6 +66,7 @@ export default function TransactionManager({ fixedType }: { fixedType?: 'income'
         <Button onClick={() => { setEditing(null); setShowForm(v => !v); reset({ user_id: 1, type: fixedType || 'expense', amount: 0, category: '', description: '', date: new Date().toISOString().slice(0, 10) }); }}>
           <Plus size={16} /> Add
         </Button>
+        <Button variant="secondary" onClick={exportCsv}><Download size={16} /> Export CSV</Button>
       </div>
 
       <SoftCard>

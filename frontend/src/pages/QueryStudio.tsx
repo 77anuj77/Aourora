@@ -4,7 +4,7 @@ import { dbApi } from '../services/database';
 import SoftCard from '../components/ui/SoftCard';
 import Button from '../components/ui/Button';
 import Editor from '@monaco-editor/react';
-import { Play, RefreshCw } from 'lucide-react';
+import { Play, RefreshCw, Download } from 'lucide-react';
 
 
 function parseVal(v: any) {
@@ -207,6 +207,18 @@ export default function QueryStudio() {
     } catch {}
   }
 
+  const exportLiveCsv = () => {
+    const rows = liveRows?.rows || [];
+    if (!rows.length) return;
+    const headers = Object.keys(rows[0]);
+    const csv = [headers.join(','), ...rows.map((r: any) => headers.map(h => JSON.stringify(r[h] ?? '')).join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${dataset}_live.csv`; a.click();
+    URL.revokeObjectURL(url);
+  };
+
   useEffect(() => { refreshRows(); }, [dataset, dbType]);
 
   const opsSql = ['insert', 'select', 'update', 'delete', 'join', 'aggregate'];
@@ -374,7 +386,10 @@ export default function QueryStudio() {
         <SoftCard className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="font-semibold">Live Data / Results</h2>
-            <button onClick={refreshRows}><RefreshCw size={16} /></button>
+            <div className="flex gap-2">
+              <button onClick={exportLiveCsv} title="Export CSV"><Download size={16} /></button>
+              <button onClick={refreshRows}><RefreshCw size={16} /></button>
+            </div>
           </div>
           {result?.rows && result.rows.length > 0 && (
             <div className="overflow-x-auto mb-3">
