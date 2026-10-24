@@ -1,32 +1,27 @@
-from fastapi import APIRouter, Query
-from ... import services, crud, models
+from fastapi import APIRouter, Query, Depends
+from ...auth import get_current_user
+from ... import services, crud
 
 router = APIRouter(prefix="/query", tags=["query"])
 
 
 @router.post("/sql/execute")
-def sql_execute(payload: dict):
-    return services.execute_sql(payload)
-
-
-@router.post("/sql/preview")
-def sql_preview(payload: dict):
-    # reuse generation by calling crud? Just return same generated without execute? We'll execute generation only.
-    return {"note": "preview generated client-side via execute? use execute"}
+def sql_execute(payload: dict, user=Depends(get_current_user)):
+    return services.execute_sql(payload, user=user)
 
 
 @router.post("/mongodb/execute")
-def mongo_execute(payload: dict):
-    return services.execute_mongo(payload)
+def mongo_execute(payload: dict, user=Depends(get_current_user)):
+    return services.execute_mongo(payload, user=user)
 
 
 @router.get("/history")
-def history(limit: int = Query(50)):
+def history(limit: int = Query(50), user=Depends(get_current_user)):
     return crud.list_history(limit)
 
 
 @router.get("/history/{hid}")
-def history_item(hid: int):
+def history_item(hid: int, user=Depends(get_current_user)):
     rows = crud.list_history(1000)
     for r in rows:
         if r["history_id"] == hid:

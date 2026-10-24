@@ -14,7 +14,7 @@ export const financeApi = {
   createBudget: (d: any) => api.post('/api/budgets', d).then(r => r.data),
   updateBudget: (id: number, d: any) => api.put(`/api/budgets/${id}`, d).then(r => r.data),
   deleteBudget: (id: number) => api.delete(`/api/budgets/${id}`).then(r => r.data),
-  budgetVsActual: (uid: number, month?: string) => api.get(`/api/budgets/${uid}/vs-actual`, { params: { month } }).then(r => r.data),
-  dashboardSummary: (user_id: number) => api.get('/api/dashboard/summary', { params: { user_id } }).then(r => r.data),
-  insights: (uid: number) => api.get(`/api/insights/${uid}`).then(r => r.data),
+  budgetVsActual: (month?: string) => api.get('/api/budgets/vs-actual', { params: { month } }).then(r => r.data),
+  dashboardSummary: () => api.get('/api/dashboard/summary').then(r => r.data),
+  insights: () => api.get('/api/insights').then(r => r.data),
 };

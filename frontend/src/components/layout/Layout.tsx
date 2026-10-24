@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { Menu, X, LayoutDashboard, Receipt, TrendingUp, TrendingDown, Wallet, BarChart3, Database, Table2, History, Settings, Search } from 'lucide-react';
+import { UserButton } from '@clerk/clerk-react';
 
 const nav = [
   { label: 'Finance', items: [
@@ -62,7 +63,7 @@ export default function Layout() {
             <Search size={16} style={{ color: 'var(--muted)' }} />
             <input className="bg-transparent outline-none flex-1 text-sm" placeholder="Search..." />
           </div>
-          <div className="soft-card px-3 py-2 text-sm">Demo Student</div>
+          <div className="flex items-center gap-2"><a href="/profile" className="soft-card px-3 py-2 text-sm">Profile</a><UserButton afterSignOutUrl="/sign-in" /></div>
         </header>
         <main className="flex-1 p-4 md:p-6">
           <Outlet />

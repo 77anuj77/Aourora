@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const inr = (n: number) => '₹' + (n ?? 0).toLocaleString('en-IN', { maximumFractionDigits: 0 });
 
 export default function Dashboard() {
-  const { data, isLoading, error } = useQuery({ queryKey: ['dashboard', 1], queryFn: () => financeApi.dashboardSummary(1) });
+  const { data, isLoading, error } = useQuery({ queryKey: ['dashboard', 1], queryFn: () => financeApi.dashboardSummary() });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">Error loading dashboard</div>;

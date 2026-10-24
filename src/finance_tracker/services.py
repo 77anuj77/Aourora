@@ -61,8 +61,28 @@ def get_insights(user_id):
     return data
 
 
-def execute_sql(req_dict, user_id=None):
+def execute_sql(req_dict, user=None):
     from .models import SqlExecuteRequest
+    user_id = user["user_id"] if user else None
+    table = req_dict.get("table")
+    # Enforce ownership for user-scoped tables
+    if user_id is not None and table in ("transactions", "budgets"):
+        op = req_dict.get("operation")
+        if op == "insert":
+            req_dict.setdefault("values", {})
+            req_dict["values"]["user_id"] = user_id
+        elif op in ("select", "aggregate"):
+            req_dict.setdefault("conditions", [])
+            if not any(c.get("column") == "user_id" for c in req_dict["conditions"]):
+                req_dict["conditions"].append({"column": "user_id", "operator": "=", "value": user_id})
+        elif op == "update":
+            req_dict.setdefault("conditions", [])
+            if not any(c.get("column") == "user_id" for c in req_dict["conditions"]):
+                req_dict["conditions"].append({"column": "user_id", "operator": "=", "value": user_id})
+        elif op == "delete":
+            req_dict.setdefault("conditions", [])
+            if not any(c.get("column") == "user_id" for c in req_dict["conditions"]):
+                req_dict["conditions"].append({"column": "user_id", "operator": "=", "value": user_id})
     req = SqlExecuteRequest(**req_dict)
     conn = get_connection()
     start = time.perf_counter()
@@ -106,8 +126,18 @@ def execute_sql(req_dict, user_id=None):
         conn.close()
 
 
-def execute_mongo(req_dict):
+def execute_mongo(req_dict, user=None):
     from .models import MongoExecuteRequest
+    # scope activity_logs by clerk user if available
+    if user and req_dict.get("collection") == "activity_logs":
+        clerk_id = user.get("clerk_user_id") if isinstance(user, dict) else None
+        if clerk_id:
+            if req_dict.get("operation") == "insertOne":
+                req_dict.setdefault("document", {})
+                req_dict["document"].setdefault("clerk_user_id", clerk_id)
+            elif req_dict.get("operation") in ("find", "updateOne", "deleteOne"):
+                req_dict.setdefault("filter", {})
+                req_dict["filter"].setdefault("clerk_user_id", clerk_id)
     req = MongoExecuteRequest(**req_dict)
     start = time.perf_counter()
     preview = f"db.{req.collection}.{req.operation}(...)"

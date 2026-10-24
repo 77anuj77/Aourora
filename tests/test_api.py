@@ -11,7 +11,7 @@ def test_create_transaction_and_list(client, user_id):
 
 def test_budget_vs_actual(client, user_id):
     client.post("/api/budgets", json={"user_id": user_id, "category": "Food", "limit_amount": 3000, "month": "2026-10"})
-    r = client.get(f"/api/budgets/{user_id}/vs-actual", params={"month": "2026-10"})
+    r = client.get("/api/budgets/vs-actual", params={"month": "2026-10"})
     assert r.status_code == 200
 
 def test_sql_execute(client, user_id):

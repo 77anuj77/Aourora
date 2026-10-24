@@ -9,7 +9,7 @@ export default function Budgets() {
   const qc = useQueryClient();
   const [form, setForm] = useState({ user_id: 1, category: '', limit_amount: 0, month: new Date().toISOString().slice(0, 7) });
   const { data: budgets = [] } = useQuery({ queryKey: ['budgets', 1], queryFn: () => financeApi.budgets({ user_id: 1 }) });
-  const { data: vs = [] } = useQuery({ queryKey: ['budget-vs', 1], queryFn: () => financeApi.budgetVsActual(1) });
+  const { data: vs = [] } = useQuery({ queryKey: ['budget-vs', 1], queryFn: () => financeApi.budgetVsActual() });
   const createMut = useMutation({ mutationFn: (d: any) => financeApi.createBudget(d), onSuccess: () => { qc.invalidateQueries({ queryKey: ['budgets'] }); qc.invalidateQueries({ queryKey: ['budget-vs'] }); qc.invalidateQueries({ queryKey: ['dashboard'] }); } });
   const deleteMut = useMutation({ mutationFn: (id: number) => financeApi.deleteBudget(id), onSuccess: () => { qc.invalidateQueries({ queryKey: ['budgets'] }); qc.invalidateQueries({ queryKey: ['budget-vs'] }); } });
 

@@ -4,7 +4,7 @@ import SoftCard from '../components/ui/SoftCard';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 export default function Analytics() {
-  const { data } = useQuery({ queryKey: ['dashboard', 1], queryFn: () => financeApi.dashboardSummary(1) });
+  const { data } = useQuery({ queryKey: ['dashboard', 1], queryFn: () => financeApi.dashboardSummary() });
   const inr = (n: number) => '₹' + (n ?? 0).toLocaleString('en-IN', { maximumFractionDigits: 0 });
   const colors = ['#7C83FD', '#A8B8FF', '#48BFA7', '#F5B971', '#F08080'];
   if (!data) return <div>Loading...</div>;

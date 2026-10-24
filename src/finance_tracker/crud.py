@@ -56,13 +56,23 @@ def get_user(user_id, conn=None):
             c.close()
 
 
-def create_user(name, email, conn=None):
+def create_user(name, email, clerk_user_id=None, conn=None):
     c = conn or get_connection()
     close = conn is None
     try:
-        cur = c.execute("INSERT INTO users (name, email) VALUES (?, ?)", (name, email))
+        cur = c.execute("INSERT INTO users (name, email, clerk_user_id) VALUES (?, ?, ?)", (name, email, clerk_user_id))
         c.commit()
         return cur.lastrowid
+    finally:
+        if close:
+            c.close()
+
+def get_user_by_clerk(clerk_user_id, conn=None):
+    c = conn or get_connection()
+    close = conn is None
+    try:
+        row = c.execute("SELECT * FROM users WHERE clerk_user_id = ?", (clerk_user_id,)).fetchone()
+        return row_to_dict(row)
     finally:
         if close:
             c.close()

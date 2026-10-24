@@ -1,14 +1,10 @@
-from fastapi import APIRouter, Query
-from ... import services, crud, models
+from fastapi import APIRouter, Depends
+from ...auth import get_current_user
+from ... import services
 
 router = APIRouter(prefix="/insights", tags=["insights"])
 
 
-@router.get("/{uid}")
-def get_insights(uid: int):
-    return services.get_insights(uid)
-
-
-@router.get("/dashboard/summary")
-def dashboard_summary(user_id: int = Query(1)):
-    return services.get_dashboard_summary(user_id)
+@router.get("")
+def get_insights(user=Depends(get_current_user)):
+    return services.get_insights(user["user_id"])

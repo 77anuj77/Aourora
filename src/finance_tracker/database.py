@@ -35,6 +35,12 @@ def init_sqlite(db_path: str = None):
         for fname in ("schema.sql", "indexes.sql", "triggers.sql"):
             sql = (sql_dir / fname).read_text()
             conn.executescript(sql)
+        # migration: add clerk_user_id column if missing
+        cols = [r["name"] for r in conn.execute("PRAGMA table_info(users)").fetchall()]
+        if "clerk_user_id" not in cols:
+            conn.execute("ALTER TABLE users ADD COLUMN clerk_user_id TEXT")
+        # unique index
+        conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_clerk ON users(clerk_user_id)")
         conn.commit()
     finally:
         conn.close()
