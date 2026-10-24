@@ -17,7 +17,7 @@ for t in ("budget_alerts", "query_history", "transactions", "budgets", "users"):
 conn.commit()
 
 # user
-uid = crud.create_user("Demo Student", "demo@example.com")
+uid = crud.create_user("Anuj Paroha", "anujparoaha07@gmail.com")
 categories = ["Food", "Travel", "Books", "Entertainment", "Utilities"]
 # transactions
 today = datetime.date.today()

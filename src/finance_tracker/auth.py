@@ -43,6 +43,22 @@ def get_current_user(clerk_user_id: str = Depends(get_current_clerk_user_id)):
     try:
         user = crud.get_user_by_clerk(clerk_user_id, conn=conn)
         if not user:
+            # try link by email from Clerk profile
+            try:
+                client = Clerk(bearer_auth=CLERK_SECRET_KEY)
+                cu = client.users.get(user_id=clerk_user_id)
+                emails = getattr(cu, "email_addresses", None) or []
+                email = getattr(emails[0], "email_address", None) if emails else None
+                if email:
+                    # find existing seeded user by email
+                    row = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+                    if row:
+                        conn.execute("UPDATE users SET clerk_user_id = ? WHERE user_id = ?", (clerk_user_id, row["user_id"]))
+                        conn.commit()
+                        user = crud.get_user(row["user_id"], conn=conn)
+            except Exception:
+                pass
+        if not user:
             # fetch from Clerk
             try:
                 client = Clerk(bearer_auth=CLERK_SECRET_KEY)
@@ -57,9 +73,17 @@ def get_current_user(clerk_user_id: str = Depends(get_current_clerk_user_id)):
             except Exception:
                 name = "User"
                 email = f"{clerk_user_id}@clerk.local"
-            uid = crud.create_user(name, email, clerk_user_id=clerk_user_id, conn=conn)
-            conn.commit()
-            user = crud.get_user(uid, conn=conn)
+            try:
+                uid = crud.create_user(name, email, clerk_user_id=clerk_user_id, conn=conn)
+                conn.commit()
+                user = crud.get_user(uid, conn=conn)
+            except Exception:
+                conn.rollback()
+                row = conn.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+                if row:
+                    conn.execute("UPDATE users SET clerk_user_id = ? WHERE user_id = ?", (clerk_user_id, row["user_id"]))
+                    conn.commit()
+                    user = crud.get_user(row["user_id"], conn=conn)
         return user
     finally:
         conn.close()
