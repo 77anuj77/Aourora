@@ -79,7 +79,6 @@ export default function TransactionManager({ fixedType }: { fixedType?: 'income'
           </select>}
           <div className="w-40"><CategorySelect type={fixedType || 'expense'} value={filters.category || ''} onChange={(v) => setFilters((f: any) => ({ ...f, category: v || undefined }))} /></div>
           <input className="soft-input px-2 py-1 text-sm" type="date" onChange={e => setFilters((f: any) => ({ ...f, date_from: e.target.value || undefined }))} />
-          <input className="soft-input px-2 py-1 text-sm" type="date" onChange={e => setFilters((f: any) => ({ ...f, date_to: e.target.value || undefined }))} />
           <input className="soft-input px-2 py-1 text-sm" placeholder="Search" onChange={e => setFilters((f: any) => ({ ...f, search: e.target.value || undefined }))} />
         </div>
       </SoftCard>
