@@ -5,6 +5,7 @@ import SoftCard from '../components/ui/SoftCard';
 import Button from '../components/ui/Button';
 import Editor from '@monaco-editor/react';
 import { Play, RefreshCw, Download } from 'lucide-react';
+import CategorySelect from '../components/ui/CategorySelect';
 
 
 function parseVal(v: any) {
@@ -257,7 +258,11 @@ export default function QueryStudio() {
               {columns.filter(c => c !== pk).map(col => (
                 <div key={col}>
                   <label className="text-xs" style={{ color: 'var(--muted)' }}>{col}</label>
-                  <input className="soft-input w-full px-3 py-2" value={insertVals[col] || ''} onChange={e => setInsertVals({ ...insertVals, [col]: e.target.value })} />
+                  {col === 'category' ? (
+                    <CategorySelect value={insertVals[col] || ''} onChange={(v) => setInsertVals({ ...insertVals, [col]: v })} type={(insertVals.type === 'income' ? 'income' : 'expense')} />
+                  ) : (
+                    <input className="soft-input w-full px-3 py-2" value={insertVals[col] || ''} onChange={e => setInsertVals({ ...insertVals, [col]: e.target.value })} />
+                  )}
                 </div>
               ))}
             </div>

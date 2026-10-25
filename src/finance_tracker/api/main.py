@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from ..database import init_sqlite, SQLITE_DB_PATH
-from .routes import users, transactions, budgets, insights, dashboard, database, queries
+from .routes import users, transactions, budgets, insights, dashboard, database, queries, categories
 
 app = FastAPI(title="Student Finance Tracker", version="0.1.0")
 
@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-routers = [users, transactions, budgets, insights, dashboard, database, queries]
+routers = [users, transactions, budgets, insights, dashboard, database, queries, categories]
 
 @app.on_event("startup")
 def startup():

@@ -53,3 +53,13 @@ SELECT user_id, category, SUM(amount) AS total_spent
 FROM transactions
 WHERE type = 'expense'
 GROUP BY user_id, category;
+
+
+CREATE TABLE IF NOT EXISTS categories (
+    category_id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL CHECK (type IN ('income','expense')),
+    UNIQUE (user_id, name, type),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);

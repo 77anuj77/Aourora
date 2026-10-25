@@ -17,4 +17,6 @@ export const financeApi = {
   budgetVsActual: (month?: string) => api.get('/api/budgets/vs-actual', { params: { month } }).then(r => r.data),
   dashboardSummary: () => api.get('/api/dashboard/summary').then(r => r.data),
   insights: () => api.get('/api/insights').then(r => r.data),
+  categories: (type?: string) => api.get('/api/categories', { params: { type } }).then(r => r.data),
+  createCategory: (d: any) => api.post('/api/categories', d).then(r => r.data),
 };

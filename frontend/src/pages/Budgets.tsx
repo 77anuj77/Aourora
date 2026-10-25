@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { financeApi } from '../services/finance';
 import SoftCard from '../components/ui/SoftCard';
 import Button from '../components/ui/Button';
+import CategorySelect from '../components/ui/CategorySelect';
 import { Plus, Trash2 } from 'lucide-react';
 
 export default function Budgets() {
@@ -20,7 +21,7 @@ export default function Budgets() {
       <h1 className="text-2xl font-bold">Budgets</h1>
       <SoftCard>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
-          <input className="soft-input px-3 py-2" placeholder="Category" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
+          <CategorySelect value={form.category} onChange={(v) => setForm({ ...form, category: v })} type="expense" />
           <input className="soft-input px-3 py-2" type="number" placeholder="Limit" value={form.limit_amount} onChange={e => setForm({ ...form, limit_amount: Number(e.target.value) })} />
           <input className="soft-input px-3 py-2" type="month" value={form.month} onChange={e => setForm({ ...form, month: e.target.value })} />
           <Button onClick={() => createMut.mutate(form)}><Plus size={16} /> Save</Button>
