@@ -5,8 +5,8 @@ import SoftCard from './ui/SoftCard';
 import Button from './ui/Button';
 import { Plus, Trash2, Edit2, Filter, Download } from 'lucide-react';
 import { z } from 'zod';
-import CategorySelect from './ui/CategorySelect';
 import { useForm } from 'react-hook-form';
+import CategorySelect from './ui/CategorySelect';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const schema = z.object({
@@ -42,8 +42,8 @@ export default function TransactionManager({ fixedType }: { fixedType?: 'income'
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['transactions'] }); qc.invalidateQueries({ queryKey: ['dashboard'] }); },
   });
 
-  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm({ resolver: zodResolver(schema), defaultValues: { user_id: 1, type: fixedType || 'expense', amount: 0, category: '', description: '', date: new Date().toISOString().slice(0, 10) } });
-  const txType = (watch('type') || fixedType || 'expense') as 'income' | 'expense';
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm({ resolver: zodResolver(schema), defaultValues: { user_id: 1, type: fixedType || 'expense', amount: 0, category: '', description: '', date: new Date().toISOString().slice(0, 10) } });
+  const txType = watch('type') as 'income' | 'expense';
 
   const onSubmit = (d: any) => {
     if (editing) updateMut.mutate({ id: editing.transaction_id, d });
@@ -77,7 +77,7 @@ export default function TransactionManager({ fixedType }: { fixedType?: 'income'
           {!fixedType && <select className="soft-input px-2 py-1 text-sm" onChange={e => setFilters((f: any) => ({ ...f, type: e.target.value || undefined }))}>
             <option value="">All types</option><option value="income">Income</option><option value="expense">Expense</option>
           </select>}
-          <div className="w-40"><CategorySelect value={filters.category || ""} onChange={(v) => setFilters((f: any) => ({ ...f, category: v || undefined }))} type={fixedType || "expense"} /></div>
+          <div className="w-40"><CategorySelect type={fixedType || 'expense'} value={filters.category || ''} onChange={(v) => setFilters((f: any) => ({ ...f, category: v || undefined }))} /></div>
           <input className="soft-input px-2 py-1 text-sm" type="date" onChange={e => setFilters((f: any) => ({ ...f, date_from: e.target.value || undefined }))} />
           <input className="soft-input px-2 py-1 text-sm" type="date" onChange={e => setFilters((f: any) => ({ ...f, date_to: e.target.value || undefined }))} />
           <input className="soft-input px-2 py-1 text-sm" placeholder="Search" onChange={e => setFilters((f: any) => ({ ...f, search: e.target.value || undefined }))} />
@@ -88,6 +88,7 @@ export default function TransactionManager({ fixedType }: { fixedType?: 'income'
         <SoftCard>
           <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <input type="hidden" {...register('user_id')} />
+            <input type="hidden" {...register('category')} />
             {!fixedType && (
               <select className="soft-input px-3 py-2" {...register('type')}>
                 <option value="income">Income</option><option value="expense">Expense</option>
@@ -95,7 +96,7 @@ export default function TransactionManager({ fixedType }: { fixedType?: 'income'
             )}
             {fixedType && <input type="hidden" value={fixedType} {...register('type')} />}
             <input className="soft-input px-3 py-2" type="number" step="0.01" placeholder="Amount" {...register('amount')} />
-            <CategorySelect value={watch('category')} onChange={(v) => setValue('category', v)} type={txType} />
+            <CategorySelect type={txType} value={watch('category') || ''} onChange={(v) => setValue('category', v, { shouldValidate: true })} />
             <input className="soft-input px-3 py-2" placeholder="Description" {...register('description')} />
             <input className="soft-input px-3 py-2" type="date" {...register('date')} />
             <div className="md:col-span-3 flex gap-2">

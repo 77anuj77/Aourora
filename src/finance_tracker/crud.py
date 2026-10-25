@@ -692,58 +692,31 @@ def list_history(limit=50, conn=None):
             c.close()
 
 
-# Categories
-PREDEFINED_CATEGORIES = {
-    "income": ["Allowance", "Salary", "Scholarship", "Freelance", "Gift", "Investment", "Other Income"],
-    "expense": ["Food", "Travel", "Books", "Entertainment", "Utilities", "Rent", "Health", "Shopping", "Education", "Other Expense"],
-}
-
-def list_categories(user_id, type=None, conn=None):
+def list_categories(ctype=None, conn=None):
     c = conn or get_connection()
     close = conn is None
     try:
-        result = set()
-        if type in PREDEFINED_CATEGORIES:
-            result.update(PREDEFINED_CATEGORIES[type])
-        elif type is None:
-            for v in PREDEFINED_CATEGORIES.values():
-                result.update(v)
-        # custom + distinct from transactions/budgets
-        q = "SELECT name, type FROM categories WHERE (user_id IS NULL OR user_id = ?)"
-        params = [user_id]
-        if type:
-            q += " AND type = ?"
-            params.append(type)
-        for r in c.execute(q, params).fetchall():
-            result.add(r["name"])
-        # distinct from transactions
-        tq = "SELECT DISTINCT category FROM transactions WHERE user_id = ?"
-        tparams = [user_id]
-        if type:
-            tq += " AND type = ?"
-            tparams.append(type)
-        for r in c.execute(tq, tparams).fetchall():
-            result.add(r["category"])
-        # budgets (expense)
-        if type in (None, "expense"):
-            for r in c.execute("SELECT DISTINCT category FROM budgets WHERE user_id = ?", (user_id,)).fetchall():
-                result.add(r["category"])
-        return sorted(result)
+        if ctype:
+            rows = c.execute("SELECT * FROM categories WHERE type = ? ORDER BY name", (ctype,)).fetchall()
+        else:
+            rows = c.execute("SELECT * FROM categories ORDER BY type, name").fetchall()
+        return [row_to_dict(r) for r in rows]
     finally:
         if close:
             c.close()
 
 
-def create_category(user_id, name, type, conn=None):
+def create_category(name, ctype, conn=None):
     c = conn or get_connection()
     close = conn is None
     try:
-        existing = c.execute("SELECT category_id FROM categories WHERE user_id=? AND name=? AND type=?", (user_id, name, type)).fetchone()
-        if existing:
-            return existing["category_id"]
-        cur = c.execute("INSERT INTO categories (user_id, name, type) VALUES (?,?,?)", (user_id, name, type))
-        c.commit()
-        return cur.lastrowid
+        try:
+            cur = c.execute("INSERT INTO categories (name, type) VALUES (?, ?)", (name.strip(), ctype))
+            c.commit()
+            return cur.lastrowid
+        except Exception:
+            row = c.execute("SELECT category_id FROM categories WHERE name = ? AND type = ?", (name.strip(), ctype)).fetchone()
+            return row["category_id"] if row else None
     finally:
         if close:
             c.close()

@@ -12,12 +12,19 @@ fake = Faker()
 init_sqlite()
 conn = get_connection()
 # clear
-for t in ("budget_alerts", "query_history", "transactions", "budgets", "users"):
+for t in ("budget_alerts", "query_history", "transactions", "budgets", "users", "categories"):
     conn.execute(f"DELETE FROM {t}")
 conn.commit()
 
 # user
 uid = crud.create_user("Anuj Paroha", "anujparoaha07@gmail.com")
+expense_cats = ["Food & Dining","Groceries","Transportation","Rent & Accommodation","Education","Entertainment","Shopping","Bills & Utilities","Healthcare","Subscriptions","Travel","Fitness & Gym","Gifts & Donations","Others"]
+income_cats = ["Salary","Scholarship","Internship Stipend","Family Allowance","Freelancing","Investments","Gifts Received","Other Income"]
+for cat in expense_cats:
+    crud.create_category(cat, "expense", conn=conn)
+for cat in income_cats:
+    crud.create_category(cat, "income", conn=conn)
+conn.commit()
 categories = ["Food", "Travel", "Books", "Entertainment", "Utilities"]
 # transactions
 today = datetime.date.today()

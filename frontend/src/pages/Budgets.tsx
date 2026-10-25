@@ -21,7 +21,7 @@ export default function Budgets() {
       <h1 className="text-2xl font-bold">Budgets</h1>
       <SoftCard>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
-          <CategorySelect value={form.category} onChange={(v) => setForm({ ...form, category: v })} type="expense" />
+          <CategorySelect type="expense" value={form.category} onChange={(v) => setForm({ ...form, category: v })} />
           <input className="soft-input px-3 py-2" type="number" placeholder="Limit" value={form.limit_amount} onChange={e => setForm({ ...form, limit_amount: Number(e.target.value) })} />
           <input className="soft-input px-3 py-2" type="month" value={form.month} onChange={e => setForm({ ...form, month: e.target.value })} />
           <Button onClick={() => createMut.mutate(form)}><Plus size={16} /> Save</Button>

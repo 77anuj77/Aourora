@@ -259,7 +259,7 @@ export default function QueryStudio() {
                 <div key={col}>
                   <label className="text-xs" style={{ color: 'var(--muted)' }}>{col}</label>
                   {col === 'category' ? (
-                    <CategorySelect value={insertVals[col] || ''} onChange={(v) => setInsertVals({ ...insertVals, [col]: v })} type={(insertVals.type === 'income' ? 'income' : 'expense')} />
+                    <CategorySelect type={(insertVals.type === 'income' ? 'income' : 'expense')} value={insertVals[col] || ''} onChange={(v) => setInsertVals({ ...insertVals, [col]: v })} />
                   ) : (
                     <input className="soft-input w-full px-3 py-2" value={insertVals[col] || ''} onChange={e => setInsertVals({ ...insertVals, [col]: e.target.value })} />
                   )}

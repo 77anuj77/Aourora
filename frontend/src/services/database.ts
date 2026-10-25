@@ -13,4 +13,6 @@ export const dbApi = {
   executeSql: (payload: any) => api.post('/api/query/sql/execute', payload).then(r => r.data),
   executeMongo: (payload: any) => api.post('/api/query/mongodb/execute', payload).then(r => r.data),
   history: (limit = 50) => api.get('/api/query/history', { params: { limit } }).then(r => r.data),
+  categories: (type?: string) => api.get('/api/categories', { params: type ? { type } : {} }).then(r => r.data),
+  createCategory: (payload: any) => api.post('/api/categories', payload).then(r => r.data),
 };

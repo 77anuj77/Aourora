@@ -41,6 +41,7 @@ def init_sqlite(db_path: str = None):
             conn.execute("ALTER TABLE users ADD COLUMN clerk_user_id TEXT")
         # unique index
         conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_clerk ON users(clerk_user_id)")
+        conn.execute("CREATE TABLE IF NOT EXISTS categories (category_id INTEGER PRIMARY KEY, name TEXT NOT NULL, type TEXT NOT NULL CHECK (type IN ('income', 'expense')), UNIQUE (name, type))")
         conn.commit()
     finally:
         conn.close()
