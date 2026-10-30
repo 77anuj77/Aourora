@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
 Name: finance_tracker
-Version: 0.1.0
-Summary: Student Finance Tracker FastAPI + SQLite + MongoDB
+Version: 0.2.0
+Summary: Student Finance Tracker FastAPI + SQLite + MongoDB + Clerk
 Requires-Python: >=3.11
 Requires-Dist: fastapi
 Requires-Dist: uvicorn[standard]
@@ -10,6 +10,8 @@ Requires-Dist: pydantic-settings
 Requires-Dist: python-dotenv
 Requires-Dist: pymongo
 Requires-Dist: faker
+Requires-Dist: python-multipart
+Requires-Dist: clerk-backend-api
 Provides-Extra: dev
 Requires-Dist: pytest; extra == "dev"
 Requires-Dist: mongomock; extra == "dev"

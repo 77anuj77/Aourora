@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 from . import crud, nosql
 from .database import get_connection
 
-
+# New activity log
 def log_activity(action, entity, details=None, db=None):
     try:
         from . import nosql as n
@@ -17,7 +17,7 @@ def log_activity(action, entity, details=None, db=None):
     except Exception:
         pass
 
-
+# Dashboard summary though sql read commands
 def get_dashboard_summary(user_id):
     conn = get_connection()
     try:

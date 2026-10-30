@@ -2,6 +2,7 @@ from datetime import date
 from typing import List, Optional, Any, Dict
 from pydantic import BaseModel, Field, EmailStr
 
+# This file contains validation models for pydantic
 
 class UserCreate(BaseModel):
     name: str

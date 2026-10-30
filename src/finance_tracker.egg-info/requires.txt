@@ -5,6 +5,8 @@ pydantic-settings
 python-dotenv
 pymongo
 faker
+python-multipart
+clerk-backend-api
 
 [dev]
 pytest

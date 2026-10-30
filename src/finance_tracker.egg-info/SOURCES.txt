@@ -1,6 +1,7 @@
 README.md
 pyproject.toml
 src/finance_tracker/__init__.py
+src/finance_tracker/auth.py
 src/finance_tracker/crud.py
 src/finance_tracker/database.py
 src/finance_tracker/models.py
@@ -23,3 +24,4 @@ src/finance_tracker/api/routes/insights.py
 src/finance_tracker/api/routes/queries.py
 src/finance_tracker/api/routes/transactions.py
 src/finance_tracker/api/routes/users.py
+tests/test_api.py
