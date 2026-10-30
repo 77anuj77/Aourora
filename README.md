@@ -101,3 +101,15 @@ See `TECH_STACK.md` and `FRONTEND.md` for detailed structure and design system.
 - No roles/organizations beyond Clerk's default user.
 - SQLite is single-writer; suitable for local/demo use.
 - Live Query Studio executes allowlisted structured operations only (no arbitrary SQL scripts).
+
+
+## Screenshots & ER Diagram
+
+### ER Diagram
+![ER Diagram](assets/FinQuery%20Student%20Finance%20ER%20Diagram.png)
+
+### Application Screenshots
+![Dashboard](assets/Screenshot%202026-10-30%20at%2012.00.33%20PM.png)
+![Transactions](assets/Screenshot%202026-10-30%20at%2012.00.43%20PM.png)
+![Live Query Studio](assets/Screenshot%202026-10-30%20at%2012.00.50%20PM.png)
+![Schema Viewer](assets/Screenshot%202026-10-30%20at%2012.02.02%20PM.png)
