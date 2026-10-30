@@ -106,10 +106,10 @@ See `TECH_STACK.md` and `FRONTEND.md` for detailed structure and design system.
 ## Screenshots & ER Diagram
 
 ### ER Diagram
-![ER Diagram](assets/FinQuery%20Student%20Finance%20ER%20Diagram.png)
+![ER Diagram](assets/er-diagram.png)
 
 ### Application Screenshots
-![Dashboard](assets/Screenshot%202026-10-30%20at%2012.00.33%20PM.png)
-![Transactions](assets/Screenshot%202026-10-30%20at%2012.00.43%20PM.png)
-![Live Query Studio](assets/Screenshot%202026-10-30%20at%2012.00.50%20PM.png)
-![Schema Viewer](assets/Screenshot%202026-10-30%20at%2012.02.02%20PM.png)
+![Dashboard](assets/dashboard.png)
+![Transactions](assets/transactions.png)
+![Live Query Studio](assets/query-studio.png)
+![Schema Viewer](assets/schema-viewer.png)
