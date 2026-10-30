@@ -8,7 +8,7 @@ Full-stack student finance tracker with a React + TypeScript frontend, FastAPI b
 
 **Frontend:** React + TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, Recharts, React Hook Form + Zod, Axios, Monaco Editor, Sonner, Clerk React.
 
-**Databases:** SQLite (users, transactions, budgets, alerts, query history) and MongoDB (activity logs, financial insights).
+**Databases:** SQLite (users, transactions, budgets, alerts, query history) and MongoDB (activity logs, financial insights)..
 
 ## Prerequisites
 - Python 3.11+
